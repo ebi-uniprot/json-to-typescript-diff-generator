@@ -16,14 +16,14 @@ async function jsonToTsSchema(jsonEndpoint) {
 
   const jsonInput = jsonInputForTargetLanguage(targetLanguage);
   await jsonInput.addSource({
-    name: "demo",
+    name: "root",
     samples: [JSON.stringify(data)],
   });
 
   const inputData = new InputData();
   inputData.addInput(jsonInput);
 
-  const o = await quicktype({
+  const { lines } = await quicktype({
     inputData,
     lang: targetLanguage,
     rendererOptions: {
@@ -31,7 +31,7 @@ async function jsonToTsSchema(jsonEndpoint) {
     },
   });
 
-  return o.lines.join("\n");
+  return lines.join("\n");
 }
 
 async function main() {
